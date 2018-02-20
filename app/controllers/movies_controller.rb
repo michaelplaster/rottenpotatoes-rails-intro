@@ -11,7 +11,38 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @movies = Movie.all 
+    
+      require 'set'
+      
+      s = Set.new ["G", "PG", "PG-13", "R"]
+      #when check box is unclicked part is removed and when checked is added back in
+    
+      
+      if(params[:sort])
+        @movies = Movie.order(params[:sort])
+        
+      else
+        @movies = Movie.all 
+        #session[:current_state] = Movie.all
+      end
+      
+      if(params[:sort] == 'release_date')
+        
+        session[:current_state] = params[:sort]
+        
+      elsif(params[:sort] == 'title')
+      
+         session[:current_state] = params[:sort]
+         
+      else
+        
+        params[:sort] = session[:current_state]
+        #session[:current_state] = Movie.all
+        
+      end
+    
+    #@release_d = Movie.all.sort{|a,b| a.release_date <=> b.release_date}
   end
 
   def new
